@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Cloud services</title>
+        <link rel="stylesheet" href="{% static "css/CS.css" %}">
+    </head>
+    <body>
+        <form action="/connect/" method="connect">
+    	Enter your name:
+        <br><input type="text" placeholder="{{name}}" name="name">
+        <br>Enter your surname:
+        <br><input type="text" placeholder="{{surname}}" name="surname">
+        <br>Enter your e-mail:
+        <br><input type="text" placeholder="{{email}}" name="email">
+        <br>Choose the service:
+        <br><select name="service">
+        {% for i in services %}
+        <option>{{i.ServiceName}}</option>
+        {% endfor %}
+        </select>
+        <br>Enter IP-address for connecting:
+        <br><input type="text" placeholder="{{ip_address}}" name="ip_address">
+        <br><input type="submit" value="Connect">
+        </form>
+    </body>
+</html>
