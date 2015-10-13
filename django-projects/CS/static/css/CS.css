@@ -1,0 +1,21 @@
+body {
+    padding: 6px;
+    font-size: 13px;
+    font-family: "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+    color: #333;
+    background: none repeat scroll 0% 0% #bbbcfa;
+    position: relative;
+}
+
+.header {
+    background-color: #4e5052;
+    height: 40px;
+}
+
+.connect-form {
+    width: 204px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
