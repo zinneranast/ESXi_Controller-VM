@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Cloud services</title>
+        <link rel="stylesheet" href="{% static "css/CS.css" %}">
+    </head>
+    <body>
+        {% for i in virtMachines %}
+        <br>{{i}}
+        {% endfor %}
+        </select>
+    </body>
+</html>
