@@ -1,12 +1,16 @@
 from django.shortcuts import render
+from django.template import RequestContext
+from django.contrib import auth
 from .models import *
-from django.http import HttpResponse
 import subprocess
 import os
 
 def services(request):
     services = Service.objects.order_by('ServiceName')
-    return render(request, 'CS/services.html', {'name': 'Alex', 'surname': 'Ivanov', 'email': 'ivanov.alex@gmail.com', 'ip_address': '192.168.1.201', 'services': services})
+    return render(request, 'services.html', {'name': 'Alex', 'surname': 'Ivanov', 'email': 'ivanov.alex@gmail.com', 'ip_address': '192.168.1.201', 'services': services, 'username': auth.get_user(request).username})
+
+def index(request):
+    return render(request, 'index.html', {'username': auth.get_user(request).username}) #, context_instance=RequestContext(request))
 
 def connect(request):
     isClientExists = Client.objects.filter(ClientEmail = request.GET['email'])
@@ -19,23 +23,19 @@ def connect(request):
 
     ClientService.objects.create(ClientId = c.ClientId, ServiceId = s.ServiceId, IpAddress = request.GET['ip_address'])
     #os.system('sudo ./VCLIConfigurator.sh userPortGroup VM1 %s %s' % (request.GET['service'], request.GET['ip_address']))
-    return HttpResponse('The service was connected succesfully.')
-
-def login(request):
-    email = request.GET.get('email')
-    password = request.GET.get('password')
-    return render(request, 'CS/login.html', {'email': email, 'password': password})
+    return render(request, 'connect.html')
+    #return HttpResponse("ura!")
 
 def control(request):
-    return render(request, 'CS/control.html')
+    return render(request, 'control.html', {'username': auth.get_user(request).username})
 
 def portgroups(request):
     getPortGroups = subprocess.Popen("esxcli -c sessionConfig.cfg network vswitch standard portgroup list", shell=True, stdout=subprocess.PIPE)
     portGroups = getPortGroups.stdout.readlines()
-    return render(request, 'CS/portgroups.html', {'portGroups': portGroups})
+    return render(request, 'portgroups.html', {'port_groups': portGroups, 'username': auth.get_user(request).username})
 
 def virtmachines(request):
     getVirtMachines = subprocess.Popen("vmware-cmd --config sessionConfig.cfg -l", shell=True, stdout=subprocess.PIPE)
     virtMachines = getVirtMachines.stdout.readlines()
-    return render(request, 'CS/virtmachines.html', {'virtMachines': virtMachines})
+    return render(request, 'virtmachines.html', {'virt_machines': virtMachines, 'username': auth.get_user(request).username})
 

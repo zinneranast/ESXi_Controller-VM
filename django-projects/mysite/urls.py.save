@@ -1,0 +1,14 @@
+from django.conf.urls import include, url
+from django.contrib import admin
+from registration.backends.simple.views import RegistrationView
+
+class MyRegistrationView(RegistrationView):
+    def get_success_url(self,request, user):
+        return 'CS/'
+
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^CS/', include('CS.urls')),
+    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registraregister'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+]

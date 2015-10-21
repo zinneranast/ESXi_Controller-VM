@@ -1,0 +1,26 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+<li><a href="{% url "index" %}">About project</a></li>
+<li><a href="{% url "services" %}">Services</a></li>
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="services">
+        <div class="container">
+          <div class="services__list">
+            <div data-serv="dhcp" class="services-card">
+                <p class="popup__title">Sign up</p>
+                <form action="/auth/register/" method="post" class="popup__form">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Sign up" class="btn popup__btn">
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock content %}
+

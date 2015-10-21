@@ -1,0 +1,26 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+   <li><a href="{% url "index" %}">About project</a></li>
+   <li><a href="{% url "services" %}">Services</a></li>
+   <li><a href="{% url "control" %}" class="active">Control</a></li>
+   <li><a href="/auth/logout/">Log out {{ username }}</a></li>
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="services">
+        <div class="container">
+          <p class="popup__title">List of avalable virtual machines:</p>
+          <div class="services__list">
+            <div data-serv="dhcp" class="services-card">
+	       {% for i in virt_machines %}
+               <br>{{i}}
+               {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock content %}

@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CS',
+    'loginsys',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,7 +57,10 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'CS/templates',
+            'loginsys/templates',
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

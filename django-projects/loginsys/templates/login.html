@@ -1,0 +1,35 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+<li><a href="{% url "index" %}">About project</a></li>
+<li><a href="{% url "services" %}">Services</a></li>
+<li><a href="/auth/login/" class="active">Log in</a></li>
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="services">
+        <div class="container">
+          <div class="services__list">
+            <div data-serv="dhcp" class="services-card">
+                <h2 class="title">Log in</h2>
+      		<form action="/auth/login/" method="post" class="popup__form">
+		{% csrf_token %}
+                <p class="services-card__text"><label for="password" class="label">Enter username:</label></p>
+                <input type="text" name="username" id="username" class="input" style="width: 20%">
+                <p class="services-card__text"><label for="password" class="label">Enter password:</label></p>
+                <input type="text" name="password" id="password" class="input" style="width: 20%">
+                <label class="label"><input type="submit" value="Log in" class="btn popup__btn" style="width: 20%"></label>
+                {% if login_error %}
+                   <p class="services-card__text"><label class="services-card__text" class="error" style="color: red">{{ login_error }}</label></p>
+                {% endif %}
+                <p class="services-card__text">No account? <a href="/auth/register/" stile="color: #2c95dd; text-decoration: none" style="color: #2c95dd; text-decoration: none;">Sign up</a></p>
+	      </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock content %}
+

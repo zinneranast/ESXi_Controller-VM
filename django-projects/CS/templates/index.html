@@ -1,0 +1,40 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+   <li><a href="{% url "index" %}" class="active">About project</a></li>
+   <li><a href="{% url "services" %}">Services</a></li>
+   {% if username %}
+      {% if request.user.is_superuser %}
+         <li><a href="{% url "control" %}">Control</a></li>
+      {% endif %}
+      <li><a href="/auth/logout/">Log out {{ username }}</a></li>
+   {% else %}
+      <li><a href="/auth/login/">Log in</a></li>
+   {% endif %}
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="about">
+        <div class="container">
+          <h2 class="title">About project</h2>
+          <div class="about__row">
+            <div class="about__image"><img src="{% static "img/cloud.jpg" %}"alt="Cloud Services"></div>
+            <div class="about__col">
+              <p class="about__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos omnis temporibus quod atque, neque inventore ea optio vitae 
+nobis aspernatur debitis provident fugiat dolore tempore corrupti blanditiis porro quia rem!</p>
+              <p class="about__text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere accusamus, magni voluptates iste illo doloribus 
+consequatur aliquid laborum ratione a reiciendis eos ab recusandae, sunt libero cupiditate aspernatur totam enim rem atque quaerat veritatis praesentium 
+officia. Id laboriosam est delectus repellat tempore accusamus minus quam nobis, nam aspernatur non, facere.</p>
+              <p class="about__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos omnis temporibus quod atque, neque inventore ea optio vitae 
+nobis aspernatur debitis provident fugiat dolore tempore corrupti blanditiis porro quia rem!</p>
+              <p class="about__text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere accusamus, magni voluptates iste illo doloribus 
+consequatur aliquid laborum ratione a reiciendis eos ab recusandae, sunt libero cupiditate aspernatur totam enim rem atque quaerat veritatis praesentium 
+officia. Id laboriosam est delectus repellat tempore accusamus minus quam nobis, nam aspernatur non, facere.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock content %}
