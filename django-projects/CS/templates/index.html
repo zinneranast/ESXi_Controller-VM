@@ -2,11 +2,11 @@
 {% load staticfiles %}
 
 {% block menu %}
-   <li><a href="{% url "index" %}" class="active">About project</a></li>
-   <li><a href="{% url "services" %}">Services</a></li>
+   <li><a href="/CS/index/" class="active">About project</a></li>
+   <li><a href="/CS/services/">Services</a></li>
    {% if username %}
       {% if request.user.is_superuser %}
-         <li><a href="{% url "control" %}">Control</a></li>
+         <li><a href="/CS/control/">Control</a></li>
       {% endif %}
       <li><a href="/auth/logout/">Log out {{ username }}</a></li>
    {% else %}
@@ -22,16 +22,18 @@
           <div class="about__row">
             <div class="about__image"><img src="{% static "img/cloud.jpg" %}"alt="Cloud Services"></div>
             <div class="about__col">
-              <p class="about__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos omnis temporibus quod atque, neque inventore ea optio vitae 
-nobis aspernatur debitis provident fugiat dolore tempore corrupti blanditiis porro quia rem!</p>
-              <p class="about__text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere accusamus, magni voluptates iste illo doloribus 
-consequatur aliquid laborum ratione a reiciendis eos ab recusandae, sunt libero cupiditate aspernatur totam enim rem atque quaerat veritatis praesentium 
-officia. Id laboriosam est delectus repellat tempore accusamus minus quam nobis, nam aspernatur non, facere.</p>
-              <p class="about__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos omnis temporibus quod atque, neque inventore ea optio vitae 
-nobis aspernatur debitis provident fugiat dolore tempore corrupti blanditiis porro quia rem!</p>
-              <p class="about__text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere accusamus, magni voluptates iste illo doloribus 
-consequatur aliquid laborum ratione a reiciendis eos ab recusandae, sunt libero cupiditate aspernatur totam enim rem atque quaerat veritatis praesentium 
-officia. Id laboriosam est delectus repellat tempore accusamus minus quam nobis, nam aspernatur non, facere.</p>
+              <h2 class="services-card__title">Abstract</h2>
+              <p class="about__text">The main reason to start this project is desire to answer the question: how can we connect a storage resource to a client host by a virtual network automatically?</p>
+	      <p class="about__text">The project deals with hypervisor technologies, virtual networking, SDN and modern Linux networking. The work was related to the use and study the following technologies, which allow to configure network automatically: OpenFlow-style SDN, NSX-style virtual networks, VxLAN, Open vSwitch.</p>
+              <h2 class="services-card__title">Reasons</h2>
+              <p class="about__text">We have a storage in a data center.Owner of the storage is a provider and he wishes to provide services to his customers (NFS in our case, it uses RPC, see NAS Server Imitator and rpcbind, rpcbind).</p>
+	      <p class="about__text">Customers (tenants) want to bring their own existing network infrastructure, which is divided on VLAN subnets. Tenants have to share array and own some part of it. We want multiple tenants to use it. Provider can’t isolate tenants with VLAN technology (because quantity of VLAN is limited on 4096). The main question is how to provide connectivity between the array and tenant host?</p>
+	      <p class="about__text">So, we widely used VxLAN technology to answer this. In fact, we tried to add VxLAN connectivity to an array by putting a VTEP (VxLAN Tunnel End Point) on it.</p>
+	      <h2 class="services-card__title">Targets</h2>
+              <p class="about__text">There are three main targets of this project:</p>
+              <p class="about__text">1.	Understand principles and limitations of current Virtual Network (VN) technology. Explore VxLAN, Open vSwitch, SDN technologies and Linux kernel networking subsystem in network automated configuration.</p>
+              <p class="about__text">2.	Create prototype/number of prototypes that will demonstrate how a virtual network could be configured to allow the multi-tenant server access.</p>
+              <p class="about__text">3.	During the project development there appeared a task to make possible RPC access to the multi-tenant server.</p>
             </div>
           </div>
         </div>

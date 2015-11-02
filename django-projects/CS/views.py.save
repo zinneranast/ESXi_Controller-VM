@@ -1,32 +1,69 @@
 from django.shortcuts import render
 from .models import *
-#from django.shortcuts import render_to_response
-from django.http import HttpResponse
-#from subprocess import Popen, PIPE
+from django.http import HttpResponse, HttpResponseRedirect
+import subprocess
+import os
+from django.template import RequestContext
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
+from django.views.generic.base import View
 
-def service_list(request):
+
+        # После чего, перенаправляем пользователя на главную страницу.
+        return HttpResponseRedirect("/")
+
+class LoginFormView(FormView):
+    form_class = AuthenticationForm
+
+    # Аналогично регистрации, только используем шаблон аутентификации.
+    template_name = "CS/login.html"
+
+    # В случае успеха перенаправим на главную.
+    success_url = "/"
+
+    def form_valid(self, form):
+        # Получаем объект пользователя на основе введённых в форму данных.
+        self.user = form.get_user()
+
+        # Выполняем аутентификацию пользователя.
+        login(self.request, self.user)
+        return super(LoginFormView, self).form_valid(form)
+
+def services(request):
     services = Service.objects.order_by('ServiceName')
-    return render(request, 'CS/service_list.html', {'name': 'Alex', 'surname': 'Ivanov', 'email': 'ivanov.alex@gmail.com', 'ip_address': '192.168.1.201', 'services': services})
+    return render(request, 'CS/services.html', {'name': 'Alex', 'surname': 'Ivanov', 'email': 'ivanov.alex@gmail.com', 'ip_address': '192.168.1.201', 'services': services, 'username': auth.get_user(request).username})
+
+def main(request):
+    return render(request, 'CS/main.html')
+
+def index(request):
+    return render(request, 'CS/index.html', 'username': auth.get_user(request).username) #, context_instance=RequestContext(request))
 
 def connect(request):
-	#f = open('/home/vi-admin/VCLI/clients.history.list', 'a')
-        #if 'name' in request.GET:
-        #        f.write(request.GET['name'] + ' ')
-        #if 'service' in request.GET:
-        #        f.write(request.GET['service'] + ' ')
-        #if 'ip_address' in request.GET:
-        #        f.write(request.GET['ip_address'] + '\n')
-    Client.objects.create(ClientName = request.GET['name'], ClientSurname = request.GET['surname'], ClientEmail = request.GET['email'])
+    isClientExists = Client.objects.filter(ClientEmail = request.GET['email'])
+    if not isClientExists.count():
+        client = Client(ClientName = request.GET['name'], ClientSurname = request.GET['surname'], ClientEmail = request.GET['email'])
+        client.save()
+
     c = Client.objects.get(ClientEmail = request.GET['email'])
     s = Service.objects.get(ServiceName = request.GET['service'])
-    ClientService.objects.create(ClientId=c.ClientId,ServiceId=s.ServiceId,IpAddress=request.GET['ip_address'])
-        #out, err = Popen('./test.sh', shell=True, stdout=PIPE).communicate()
-        #print >> f, out, err
-        #f.close()
-    return HttpResponse('win!')
 
-def login(request):
-    email = request.GET['email']
-    password = request.GET['password']
-    return render(request, 'CS/login.html', {'email': email, 'password' = request.GET['password']})
+    ClientService.objects.create(ClientId = c.ClientId, ServiceId = s.ServiceId, IpAddress = request.GET['ip_address'])
+    #os.system('sudo ./VCLIConfigurator.sh userPortGroup VM1 %s %s' % (request.GET['service'], request.GET['ip_address']))
+    return render(request, 'CS/connect.html')
+    #return HttpResponse("ura!")
+
+def control(request):
+    return render(request, 'CS/control.html')
+
+def portgroups(request):
+    getPortGroups = subprocess.Popen("esxcli -c sessionConfig.cfg network vswitch standard portgroup list", shell=True, stdout=subprocess.PIPE)
+    portGroups = getPortGroups.stdout.readlines()
+    return render(request, 'CS/portgroups.html', {'portGroups': portGroups})
+
+def virtmachines(request):
+    getVirtMachines = subprocess.Popen("vmware-cmd --config sessionConfig.cfg -l", shell=True, stdout=subprocess.PIPE)
+    virtMachines = getVirtMachines.stdout.readlines()
+    return render(request, 'CS/virtmachines.html', {'virtMachines': virtMachines})
 

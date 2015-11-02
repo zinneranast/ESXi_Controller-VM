@@ -2,10 +2,11 @@
 {% load staticfiles %}
 
 {% block menu %}
-   <li><a href="{% url "index" %}">About project</a></li>
-   <li><a href="{% url "services" %}" class="active">Services</a></li>   {% if username %}
+   <li><a href="/CS/index/">About project</a></li>
+   <li><a href="/CS/services/" class="active">Services</a></li>  
+   {% if username %}
       {% if request.user.is_superuser %}
-         <li><a href="{% url "control" %}">Control</a></li>
+         <li><a href="/CS/control/">Control</a></li>
       {% endif %}
       <li><a href="/auth/logout/">Log out {{ username }}</a></li>
    {% else %}
@@ -21,9 +22,11 @@
           <div class="services__list">
             {% for i in services %}
             <div data-serv="dhcp" class="services-card">
-              <h2 class="services-card__title">{{i.ServiceName}}</h2>
-              <p class="services-card__text">{{i.ServiceDescription}}</p>
-              <p class="services-card__text"><a href="/" class="js-btn-get text-link">Get it in one click.</a></p>
+              <h2 class="services-card__title">{{ i.ServiceName }}</h2>
+              <p class="services-card__text">{{ i.ServiceDescription }} You can <a href="/" class="js-btn-get text-link">get it in one click.</a></p>
+	      {% if request.user.is_superuser %}
+                <p class="services-card__text"><a href="{% url 'establishconnections' i.ServiceName %}" class="text-link">Get list of establish connections.</a></p>
+	      {% endif %}
             </div>
             {% endfor %}
           </div>
@@ -35,6 +38,7 @@
       <p class="popup__title">Get the service</p>
       <p class="popup__subtitle">You can use the service now!</p>
       <form action="/CS/connect/" method="connect" class="popup__form">
+	{% csrf_token %}
         <label class="label">Enter your name:</label>
         <input type="text" placeholder="{{name}}" name="name" class="input">
         <label class="label">Enter your surname:</label>
@@ -51,6 +55,9 @@
         </div>
         <label class="label">Enter IP-address for connecting:</label>
         <input type="text" placeholder="{{ip_address}}" name="ip_address" class="input">
+        {% if empty_field %}
+        <label class="label" style="color: red">{{ empty_field }}</label>
+	{% endif %}
         <input type="submit" value="Connect" class="btn popup__btn">
       </form>
       <script src="{% static "js/jquery.min.js" %}"></script>

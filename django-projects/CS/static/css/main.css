@@ -7,6 +7,7 @@ h1, h2, h3, h4, h5, h6, p, span, ul, li, a {
   font-size: 16px;
   font-family: 'Open Sans', Arial, sans-serif;
   font-weight: normal;
+  text-align: justify;
 }
 body {
   margin: 0;
@@ -108,7 +109,8 @@ body {
 }
 .about__image {
   float: right;
-  width: 57%;
+  width: 60%;
+  margin-top: 8px;
   margin-left: 20px;
   margin-bottom: 10px;
 }
@@ -246,3 +248,7 @@ body {
 .text-link:hover {
   text-decoration: underline;
 }
+.errorlist {
+  color: red;
+}
+

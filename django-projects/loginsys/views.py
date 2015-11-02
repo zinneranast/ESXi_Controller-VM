@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from django.contrib import auth
 from django.core.context_processors import csrf
 from django.contrib.auth.forms import UserCreationForm
+from .forms import *
 
 def login(request):
     args = {}
@@ -24,18 +25,18 @@ def logout(request):
     auth.logout(request)
     return redirect('/CS/index/', context_instance=RequestContext(request))
 
-def register(request):
+def registrate(request):
     args = {}
     args.update(csrf(request))
-    args['form'] = UserCreationForm()
+    args['form'] = UserCreateForm()
     if request.POST:
-        newuser_form = UserCreationForm(request.POST)
+        newuser_form = UserCreateForm(request.POST)
         if newuser_form.is_valid():
             newuser_form.save()
-            newuser = auth.authenticate(username=newuser_form.cleaned_data['username'], password=newuser_form.cleaned_data['password2'])
+            newuser = auth.authenticate(email=newuser_form.cleaned_data['email'], username=newuser_form.cleaned_data['username'], password=newuser_form.cleaned_data['password1'])
             auth.login(request, newuser)
             return redirect('/CS/index/', context_instance=RequestContext(request))
         else:
             args['form'] = newuser_form
-    return render_to_response('register.html', args,  context_instance=RequestContext(request))
+    return render_to_response('registrate.html', args,  context_instance=RequestContext(request))
 

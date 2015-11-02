@@ -2,9 +2,9 @@
 {% load staticfiles %}
 
 {% block menu %}
-   <li><a href="{% url "index" %}">About project</a></li>
-   <li><a href="{% url "services" %}">Services</a></li>
-   <li><a href="{% url "control" %}" class="active">Control</a></li>
+   <li><a href="/CS/index/">About project</a></li>
+   <li><a href="/CS/services/">Services</a></li>
+   <li><a href="/CS/control/" class="active">Control</a></li>
    <li><a href="/auth/logout/">Log out {{ username }}</a></li>
 {% endblock menu %}
 
@@ -16,6 +16,12 @@
           <div class="services__list">
             <div class="services-card">
                <h2 class="services-card__title">ESXi host 94.154.84.190</h2>
+               <p class="services-card__text">Get list of standard virtual switches:</p>
+               <p class="services-card__text">
+                  <form action="/switches/" method="switches">
+                  <input type="submit" value="Virtual switches" class="btn popup__btn" style="width: 20%; margin-top: 0px; margin-bottom: 15px;">
+                  </form>
+               </p>
                <p class="services-card__text">Get list of port groups:</p>
                <p class="services-card__text">
                   <form action="/portgroups/" method="portgroups">
@@ -26,11 +32,28 @@
                <p class="services-card__text">
                   <form action="/virtmachines/" method="virtmachines">
                   <input type="submit" value="Virtual machines" class="btn popup__btn" style="width: 20%; margin-top: 0px; margin-bottom: 15px;">
+		  </form>
+               </p>
+               <p class="services-card__text">Get output of root command:</p>
+               <p class="services-card__text">
+                  <input type="submit" value="Your command" class="btn popup__btn js-btn-get" style="width: 20%; margin-top: 0px; margin-bottom: 15px;">
                </p>
             </div>
           </div>
         </div>
       </div>
     </main>
+    <div id="backing"></div>
+    <div class="popup popup-get"><a href="/" class="popup-close"><span></span><span></span></a>
+      <p class="popup__title">vSphere vCLI commands</p>
+      <form action="/CS/rootcommand/" method="rootcommand" class="popup__form">
+        {% csrf_token %}
+        <label class="label">Enter a command:</label>
+        <input type="text" placeholder="vicfg-vswitch --config sessionConfig.cfg --check vSwitch0" name="command" class="input">
+        <input type="submit" value="Get output" class="btn popup__btn">
+      </form>
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    </div>
 {% endblock content %}
 

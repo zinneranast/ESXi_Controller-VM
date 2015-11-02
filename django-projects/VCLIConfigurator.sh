@@ -11,6 +11,12 @@ vmName=$2
 serviceName=$3
 ipAddr=$4
 
+#get A VM's IP
+getPath=`esxcli --config sessionConfig.cfg vm process list | sed -n "/$vmName/{n;p;}" | awk 'NF' | sed -n '2p'`
+path=`echo  ${getPath/Config File:/}`
+dstIpAddr=`vmware-cmd --config sessionConfig.cfg $path getguestinfo ip`
+dstIpAddr=`echo  ${dstIpAddr/getguestinfo(ip) =/}`
+
 #get a virtual switch name
 tenantSwitch=`esxcli -c sessionConfig.cfg network vswitch standard portgroup list | grep -w "$portGroup" | awk '{print $2}'`
 if [ "$tenantSwitch" == "" ]; then
@@ -85,5 +91,5 @@ spawn ssh root@192.168.1.199
 expect "Password: "
 send "!root01\r"
 expect -re "\\$ $"
-send "sudo /home/vmB/serverConfigurator.sh $ipAddr $vlanId $vmName$serviceName\r"
+send "sudo /home/vmB/srv-configs/serverConfigurator.sh $ipAddr $vlanId $serviceName $vmName $portGroup $dstIpAddr\r"
 expect EOF

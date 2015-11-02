@@ -2,8 +2,8 @@
 {% load staticfiles %}
 
 {% block menu %}
-<li><a href="{% url "index" %}">About project</a></li>
-<li><a href="{% url "services" %}">Services</a></li>
+<li><a href="/CS/index/">About project</a></li>
+<li><a href="/CS/services/">Services</a></li>
 {% if username %}
 <li><a href="/auth/logout/"">Log out {{ username }}</a></li>
 {% else %}
