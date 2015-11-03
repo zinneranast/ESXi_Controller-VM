@@ -10,6 +10,7 @@ portGroup=$1
 vmName=$2
 serviceName=$3
 ipAddr=$4
+username=$5
 
 #get A VM's IP
 getPath=`esxcli --config sessionConfig.cfg vm process list | sed -n "/$vmName/{n;p;}" | awk 'NF' | sed -n '2p'`
@@ -91,5 +92,5 @@ spawn ssh root@192.168.1.199
 expect "Password: "
 send "!root01\r"
 expect -re "\\$ $"
-send "sudo /home/vmB/srv-configs/serverConfigurator.sh $ipAddr $vlanId $serviceName $vmName $portGroup $dstIpAddr\r"
+send "sudo /home/vmB/srv-configs/serverConfigurator.sh $ipAddr $vlanId $serviceName $vmName $portGroup $dstIpAddr $username\r"
 expect EOF

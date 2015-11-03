@@ -24,7 +24,7 @@
             <div data-serv="dhcp" class="services-card">
               <h2 class="services-card__title">{{ i.ServiceName }}</h2>
               <p class="services-card__text">{{ i.ServiceDescription }} You can <a href="/" class="js-btn-get text-link">get it in one click.</a></p>
-	      {% if request.user.is_superuser %}
+	      {% if username %}
                 <p class="services-card__text"><a href="{% url 'establishconnections' i.ServiceName %}" class="text-link">Get list of establish connections.</a></p>
 	      {% endif %}
             </div>
@@ -33,18 +33,78 @@
         </div>
       </div>
     </main>
+    
+    {% if username %}
+      {% if request.user.is_superuser %}
+      <div id="backing"></div>
+      <div class="popup popup-get" style="height: 390px;"><a href="/" class="popup-close"><span></span><span></span></a>
+        <p class="popup__title">Get the service</p>
+        <p class="popup__subtitle">You can use the service now!</p>
+        <form action="/CS/connect/" method="connect" class="popup__form">
+  	{% csrf_token %}
+          <label class="label">Choose the service:</label>
+          <div class="select">
+            <select name="service">
+              {% for i in services %}
+              <option>{{ i.ServiceName }}</option>
+              {% endfor %}
+            </select>
+          </div>
+  	<label class="label">Choose the VM for connecting with the server :</label>
+          <div class="select">
+            <select name="virt_machine">
+              {% for i in virt_machines %}
+              <option>{{ i }}</option>
+              {% endfor %}
+            </select>
+  	</div>
+          <label class="label">Enter IP-address for connecting:</label>
+          <input type="text" placeholder="{{ip_address}}" name="ip_address" class="input">
+          {% if empty_field %}
+          <label class="label" style="color: red">{{ empty_field }}</label>
+  	{%  endif %}
+          <input type="submit" value="Connect" class="btn popup__btn">
+        </form>
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/main.js" %}"></script>
+      </div>
+     {% else %}
+     <div id="backing"></div>
+      <div class="popup popup-get" style="height: 315px;"><a href="/" class="popup-close"><span></span><span></span></a>
+        <p class="popup__title">Get the service</p>
+        <p class="popup__subtitle">You can use the service now!</p>
+        <form action="/CS/connect/" method="connect" class="popup__form">
+          {% csrf_token %}
+          <label class="label">Choose the service:</label>
+          <div class="select">
+            <select name="service">
+              {% for i in services %}
+              <option>{{ i.ServiceName }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <label class="label">Enter IP-address for connecting:</label>
+          <input type="text" placeholder="{{ip_address}}" name="ip_address" class="input">
+          {% if empty_field %}
+          <label class="label" style="color: red">{{ empty_field }}</label>
+          {% endif %}
+          <input type="submit" value="Connect" class="btn popup__btn">
+        </form>
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/main.js" %}"></script>
+      </div>
+      {% endif %}
+   {% else %}
     <div id="backing"></div>
     <div class="popup popup-get"><a href="/" class="popup-close"><span></span><span></span></a>
       <p class="popup__title">Get the service</p>
       <p class="popup__subtitle">You can use the service now!</p>
       <form action="/CS/connect/" method="connect" class="popup__form">
-	{% csrf_token %}
-        <label class="label">Enter your name:</label>
-        <input type="text" placeholder="{{name}}" name="name" class="input">
-        <label class="label">Enter your surname:</label>
-        <input placeholder="{{surname}}" name="surname" class="input">
-        <label class="label">Enter your e-mail:</label>
-        <input type="text" placeholder="{{email}}" name="email" class="input">
+        {% csrf_token %}
+          <label class="label">Enter username:</label>
+          <input type="text" placeholder="{{username}}" name="username" class="input">
+          <label class="label">Enter e-mail:</label>
+          <input type="text" placeholder="{{email}}" name="email" class="input">
         <label class="label">Choose the service:</label>
         <div class="select">
           <select name="service">
@@ -57,10 +117,11 @@
         <input type="text" placeholder="{{ip_address}}" name="ip_address" class="input">
         {% if empty_field %}
         <label class="label" style="color: red">{{ empty_field }}</label>
-	{% endif %}
+        {% endif %}
         <input type="submit" value="Connect" class="btn popup__btn">
       </form>
       <script src="{% static "js/jquery.min.js" %}"></script>
       <script src="{% static "js/main.js" %}"></script>
     </div>
+    {% endif %}
 {% endblock content %}
