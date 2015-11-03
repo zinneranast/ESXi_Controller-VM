@@ -1,0 +1,22 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+   <li><a href="/CS/index/">About project</a></li>
+   <li><a href="/CS/services/">Services</a></li>
+   <li><a href="/CS/control/" class="active">Control</a></li>
+   <li><a href="/auth/logout/">Log out {{ username }}</a></li>
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="services">
+        <div class="container">
+           <p class="services-card__title">Output of command</p>
+           {% for i in output_command %}
+               <p>{{ i }}</p>
+           {% endfor %}
+	</div>
+      </div>
+    </main>
+{% endblock content %}

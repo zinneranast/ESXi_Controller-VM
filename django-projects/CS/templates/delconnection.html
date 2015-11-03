@@ -1,0 +1,31 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+   <li><a href="/CS/index/">About project</a></li>
+   <li><a href="/CS/services/">Services</a></li>
+   {% if username %}
+      {% if request.user.is_superuser %}
+         <li><a href="/CS/control/">Control</a></li>
+      {% endif %}
+      <li><a href="/auth/logout/">Log out {{ username }}</a></li>
+   {% else %}
+      <li><a href="/auth/login/">Log in</a></li>
+   {% endif %}
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="services">
+        <div class="container">
+          <h2 class="title">Congratulations!</h2>
+          <div class="services__list">
+            <div data-serv="dhcp" class="services-card">
+              <p class="services-card__text">The service is successfully disconnected.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock content %}
+

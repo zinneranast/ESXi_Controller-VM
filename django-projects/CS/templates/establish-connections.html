@@ -1,0 +1,38 @@
+{% extends "base1.html" %}
+{% load staticfiles %}
+
+{% block menu %}
+   <li><a href="/CS/index/">About project</a></li>
+   <li><a href="/CS/services/">Services</a></li>
+   {% if username %}
+      {% if request.user.is_superuser %}
+         <li><a href="/CS/control/">Control</a></li>
+      {% endif %}
+      <li><a href="/auth/logout/">Log out {{ username }}</a></li>
+   {% else %}
+      <li><a href="/auth/login/">Log in</a></li>
+   {% endif %}
+{% endblock menu %}
+
+{% block content %}
+    <main class="main">
+      <div class="services">
+        <div class="container">
+          <p class="services-card__title">Establish connections associated with {{ serviceName }}:</p>
+          <div class="services__list">
+            <div class="services-card">
+	       <table cellspacing="4">
+  		 <tr>
+		   <td><p>Service Name</p></td><td><p>Src Port Group</p></td><td><p>Src Virtual Machine Name</p></td><td><p>Src IP Address</p></td><td><p>Dst IP Address</p></td>
+ 	         </tr>
+	       {% for i in connections %}
+	         <tr><td><p>{{ i.0 }}</p></td><td><p>{{ i.1 }}</p></td><td><p>{{ i.2 }}</p></td><td><p>{{ i.3 }}</p></td><td><p>{{ i.4 }}</p></td>
+		 <td><p><a href="{% url 'delconnection' serviceName=i.0 vmName=i.2 %}" class="text-link">Delete this connection.</a></p></td></tr>
+               {% endfor %}
+               </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+{% endblock content %}
